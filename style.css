@@ -9,6 +9,7 @@ body, html {
     height: 100%;
     overflow: hidden;
     background-color: #000;
+    font-family: 'Montserrat', sans-serif; /* Применяем шрифт */
 }
 
 .bg-layer {
@@ -24,32 +25,25 @@ body, html {
 
 header {
     text-align: center;
-    padding-top: 5vh; /* Адаптивный отступ сверху (от высоты экрана) */
+    padding-top: 5vh;
 }
 
 .logo {
-    height: 60px; /* Можно задать фиксированную высоту или в vh */
+    height: 60px;
     width: auto;
 }
 
 main {
     width: 100%;
-    height: 80vh; /* Занимает основную часть экрана */
+    height: 80vh;
     overflow-x: auto;
     overflow-y: hidden;
-    cursor: grab; /* Иконка руки для перетаскивания */
+    cursor: grab;
     display: flex;
-    align-items: center; /* Центрируем контент по вертикали */
+    align-items: center;
 }
 
-main:active {
-    cursor: grabbing;
-}
-
-/* Скрываем скроллбар для чистоты дизайна */
-main::-webkit-scrollbar {
-    display: none;
-}
+main::-webkit-scrollbar { display: none; }
 
 .scroll-wrapper {
     display: inline-flex;
@@ -62,27 +56,53 @@ main::-webkit-scrollbar {
     flex-shrink: 0;
 }
 
-/* Адаптивные размеры картинок */
-.case-item {
-    /* Картинки будут подстраиваться под высоту экрана, но не больше оригинала */
-    height: 65vh; 
-    width: auto; 
-    max-height: 694px;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
-.case-item:hover {
-    transform: scale(1.02);
-}
-
 .portfolio-grid {
     display: flex;
     gap: 30px;
 }
 
-/* ПОПАП С ПРОЗРАЧНОСТЬЮ */
+/* Контейнер для превью */
+.case-container {
+    position: relative; /* Чтобы тень и текст позиционировались внутри */
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.case-container:hover {
+    transform: scale(1.02);
+}
+
+.case-item {
+    height: 65vh; 
+    max-height: 694px;
+    width: auto;
+    display: block;
+}
+
+/* Тень внизу картинки */
+.case-shadow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Растягивается по ширине */
+    height: auto; /* Высота из файла */
+    pointer-events: none; /* Чтобы не мешала кликам */
+}
+
+/* Текст над тенью */
+.case-caption {
+    position: absolute;
+    bottom: 25px; /* Отступ от самого низа */
+    left: 20px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: none;
+    pointer-events: none;
+}
+
+/* ПОПАП БЕЗ БЛЮРА */
 .popup {
     display: none;
     position: fixed;
@@ -90,8 +110,7 @@ main::-webkit-scrollbar {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Прозрачность 60% */
-    backdrop-filter: blur(5px); /* Легкое размытие фона для эффекта глубины */
+    background: rgba(0, 0, 0, 0.6); /* Чистое затемнение 60% */
     z-index: 1000;
     justify-content: center;
     align-items: flex-start;
@@ -106,7 +125,7 @@ main::-webkit-scrollbar {
 
 #popup-img {
     width: auto;
-    max-width: 90%; /* Оставляем зазоры по бокам */
+    max-width: 90%;
     display: block;
     margin: 0 auto;
     cursor: default;
