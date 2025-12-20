@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -21,10 +21,10 @@
             </div>
 
             <div class="portfolio-grid">
-                <img src="images/case_01_small.png" alt="Case 1" class="case-item" onclick="openPopup(this.src)">
-                <img src="images/case_01_small.png" alt="Case 2" class="case-item" onclick="openPopup(this.src)">
-                <img src="images/case_01_small.png" alt="Case 3" class="case-item" onclick="openPopup(this.src)">
-                <img src="images/case_01_small.png" alt="Case 4" class="case-item" onclick="openPopup(this.src)">
+                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
+                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
+                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
+                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
             </div>
         </div>
     </main>
@@ -39,7 +39,7 @@
         function openPopup(src) {
             const popup = document.getElementById('popup');
             const popupImg = document.getElementById('popup-img');
-            popupImg.src = src; // В будущем здесь можно менять small на full
+            popupImg.src = src; 
             popup.style.display = 'flex';
         }
     </script>
