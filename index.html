@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -14,7 +14,7 @@
         <img src="images/logo.png" alt="Logo" class="logo">
     </header>
 
-    <main>
+    <main id="scroll-container">
         <div class="scroll-wrapper">
             <div class="cases-title">
                 <img src="images/txt_cases.png" alt="Cases">
@@ -29,18 +29,51 @@
         </div>
     </main>
 
-    <div id="popup" class="popup" onclick="this.style.display='none'">
+    <div id="popup" class="popup" onclick="closePopup()">
         <div class="popup-content">
             <img id="popup-img" src="" alt="Full size">
         </div>
     </div>
 
     <script>
+        const slider = document.getElementById('scroll-container');
+        let isDown = false;
+        letstartX;
+        let scrollLeft;
+
+        // 1. Скролл колесиком мыши (Вертикальный скролл превращаем в горизонтальный)
+        slider.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            slider.scrollLeft += evt.deltaY;
+        });
+
+        // 2. Перетаскивание мышкой (Drag-to-scroll)
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.classList.add('active');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+        });
+        slider.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2; // множитель скорости
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
         function openPopup(src) {
-            const popup = document.getElementById('popup');
-            const popupImg = document.getElementById('popup-img');
-            popupImg.src = src; 
-            popup.style.display = 'flex';
+            document.getElementById('popup-img').src = src;
+            document.getElementById('popup').style.display = 'flex';
+        }
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
         }
     </script>
 </body>
