@@ -16,11 +16,18 @@ body, html {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background: url('images/bg.png') no-repeat center center;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Важно: фон должен быть сзади всех */
+    
+    /* Пробуем относительный путь без слэша в начале */
+    background-image: url('images/bg.png'); 
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: cover;
+    
+    /* Добавим для надежности, чтобы фон был виден */
+    display: block;
 }
 
 header {
