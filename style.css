@@ -44,14 +44,25 @@ main {
     cursor: grab;
     display: flex;
     align-items: center;
+    
+    /* Убираем скроллбар для Chrome, Safari и Opera */
+    -webkit-overflow-scrolling: touch; /* Плавность на iOS */
 }
 
-main::-webkit-scrollbar { display: none; }
+main::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
 
-.scroll-wrapper {
-    display: inline-flex;
-    align-items: flex-end;
-    padding: 0 120px;
+/* Скрытие для Firefox */
+main {
+    scrollbar-width: none;
+}
+
+/* Скрытие для старых IE и Edge */
+main {
+    -ms-overflow-style: none;
 }
 
 .cases-title {
