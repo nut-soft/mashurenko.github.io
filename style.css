@@ -1,0 +1,104 @@
+/* Обнуление отступов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: sans-serif;
+    background-color: #000; /* Цвет на случай, если фон долго грузится */
+}
+
+/* Фон 1920х1080 */
+.bg-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: url('images/bg.png') no-repeat center center;
+    background-size: cover; /* Растягивается или урезается */
+}
+
+/* Логотип */
+header {
+    text-align: center;
+    padding-top: 80px;
+    margin-bottom: 80px;
+}
+
+.logo {
+    display: inline-block;
+}
+
+/* Сложный блок со скроллом */
+main {
+    width: 100%;
+    overflow-x: auto; /* Включаем горизонтальный скролл */
+    white-space: nowrap; /* Чтобы элементы не переносились на новую строку */
+}
+
+/* Убираем стандартный скроллбар для красоты (опционально) */
+main::-webkit-scrollbar {
+    height: 8px;
+}
+main::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+}
+
+.scroll-wrapper {
+    display: inline-flex; /* Позволяет блоку растягиваться под контент */
+    align-items: flex-start;
+    padding-left: 120px; /* Отступ слева для названия */
+    padding-bottom: 50px; /* Чтобы скроллбар не прилипал к картинкам */
+}
+
+.cases-title {
+    margin-right: 120px; /* Отступ между названием и первой картинкой */
+    flex-shrink: 0; /* Название не должно сжиматься */
+}
+
+.portfolio-grid {
+    display: flex;
+    gap: 30px; /* Расстояние между картинками */
+    flex-shrink: 0;
+}
+
+.case-item {
+    width: 370px;
+    height: 694px;
+    object-fit: cover;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Попап */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 100;
+    justify-content: center;
+    align-items: flex-start; /* Начинаем сверху, чтобы можно было скроллить вниз */
+    overflow-y: auto;
+}
+
+.popup-content {
+    width: 100%;
+    text-align: center;
+}
+
+#popup-img {
+    width: auto; /* Реальный масштаб по ширине */
+    max-width: 100%; /* Но не шире экрана */
+    display: block;
+    margin: 0 auto;
+}
