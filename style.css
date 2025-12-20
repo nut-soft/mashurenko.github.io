@@ -61,12 +61,17 @@ main::-webkit-scrollbar { display: none; }
     gap: 30px;
 }
 
-/* Контейнер для превью */
 .case-container {
-    position: relative; /* Чтобы тень и текст позиционировались внутри */
+    position: relative;
     flex-shrink: 0;
     cursor: pointer;
     transition: transform 0.3s ease;
+    
+    /* СКРУГЛЕНИЕ: Укажи здесь радиус, который у тебя на макете */
+    border-radius: 20px; 
+    overflow: hidden; /* Обрезает всё, что выходит за радиус (включая тень) */
+    
+    line-height: 0; /* Убирает микро-отступы под картинкой */
 }
 
 .case-container:hover {
@@ -80,26 +85,31 @@ main::-webkit-scrollbar { display: none; }
     display: block;
 }
 
-/* Тень внизу картинки */
+/* ТЕНЬ: фиксированная высота 415px, растягивается по ширине */
 .case-shadow {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%; /* Растягивается по ширине */
-    height: auto; /* Высота из файла */
-    pointer-events: none; /* Чтобы не мешала кликам */
+    width: 100%;
+    height: 415px; /* Фиксированная высота как ты просил */
+    object-fit: fill; /* Растягивает 1 пиксель по всей ширине */
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* Текст над тенью */
+/* ТЕКСТ: размер 16, увеличенные отступы */
 .case-caption {
     position: absolute;
-    bottom: 25px; /* Отступ от самого низа */
-    left: 20px;
+    bottom: 50px; /* Было 25, увеличили в 2 раза */
+    left: 40px;   /* Было 20, увеличили в 2 раза */
     color: #fff;
-    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; /* Размер 16 */
     font-weight: 500;
-    text-transform: none;
+    z-index: 2; /* Поверх тени */
     pointer-events: none;
+    white-space: normal; /* Разрешаем перенос текста, если он длинный */
+    line-height: 1.2;
 }
 
 /* ПОПАП БЕЗ БЛЮРА */
