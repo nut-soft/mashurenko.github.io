@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+
+    <header>
+        <img src="images/logo.png" alt="Logo" class="logo">
+    </header>
+
+    <main>
+        <div class="scroll-wrapper">
+            <div class="cases-title">
+                <img src="images/txt_cases.png" alt="Cases">
+            </div>
+
+            <div class="portfolio-grid">
+                <img src="images/case_01_small.png" alt="Case 1" class="case-item" onclick="openPopup(this.src)">
+                <img src="images/case_01_small.png" alt="Case 2" class="case-item" onclick="openPopup(this.src)">
+                <img src="images/case_01_small.png" alt="Case 3" class="case-item" onclick="openPopup(this.src)">
+                <img src="images/case_01_small.png" alt="Case 4" class="case-item" onclick="openPopup(this.src)">
+            </div>
+        </div>
+    </main>
+
+    <div id="popup" class="popup" onclick="this.style.display='none'">
+        <div class="popup-content">
+            <img id="popup-img" src="" alt="Full size">
+        </div>
+    </div>
+
+    <script>
+        function openPopup(src) {
+            const popup = document.getElementById('popup');
+            const popupImg = document.getElementById('popup-img');
+            popupImg.src = src; // В будущем здесь можно менять small на full
+            popup.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
