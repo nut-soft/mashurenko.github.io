@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,10 +22,29 @@
             </div>
 
             <div class="portfolio-grid">
-                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
-                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
-                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
-                <img src="images/case_01_small.png" class="case-item" onclick="openPopup('images/case_01_big.jpg')">
+                <div class="case-container" onclick="openPopup('images/case_01_big.jpg')">
+                    <img src="images/case_01_small.png" class="case-item">
+                    <img src="images/img_shadow.png" class="case-shadow">
+                    <div class="case-caption">Email mailing system</div>
+                </div>
+
+                <div class="case-container" onclick="openPopup('images/case_01_big.jpg')">
+                    <img src="images/case_01_small.png" class="case-item">
+                    <img src="images/img_shadow.png" class="case-shadow">
+                    <div class="case-caption">Email mailing system</div>
+                </div>
+
+                <div class="case-container" onclick="openPopup('images/case_01_big.jpg')">
+                    <img src="images/case_01_small.png" class="case-item">
+                    <img src="images/img_shadow.png" class="case-shadow">
+                    <div class="case-caption">Email mailing system</div>
+                </div>
+
+                <div class="case-container" onclick="openPopup('images/case_01_big.jpg')">
+                    <img src="images/case_01_small.png" class="case-item">
+                    <img src="images/img_shadow.png" class="case-shadow">
+                    <div class="case-caption">Email mailing system</div>
+                </div>
             </div>
         </div>
     </main>
@@ -38,40 +58,39 @@
     <script>
         const slider = document.getElementById('scroll-container');
         let isDown = false;
-        letstartX;
+        let startX;
         let scrollLeft;
 
-        // 1. Скролл колесиком мыши (Вертикальный скролл превращаем в горизонтальный)
         slider.addEventListener('wheel', (evt) => {
             evt.preventDefault();
             slider.scrollLeft += evt.deltaY;
         });
 
-        // 2. Перетаскивание мышкой (Drag-to-scroll)
         slider.addEventListener('mousedown', (e) => {
             isDown = true;
             slider.classList.add('active');
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
         });
-        slider.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-        slider.addEventListener('mouseup', () => {
-            isDown = false;
-        });
+        slider.addEventListener('mouseleave', () => isDown = false);
+        slider.addEventListener('mouseup', () => isDown = false);
         slider.addEventListener('mousemove', (e) => {
             if(!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; // множитель скорости
+            const walk = (x - startX) * 2;
             slider.scrollLeft = scrollLeft - walk;
         });
 
         function openPopup(src) {
-            document.getElementById('popup-img').src = src;
-            document.getElementById('popup').style.display = 'flex';
+            const popup = document.getElementById('popup');
+            const popupImg = document.getElementById('popup-img');
+            popupImg.src = src;
+            popup.style.display = 'flex';
+            // ФИКС БАГА: Сбрасываем скролл попапа вверх при открытии
+            popup.scrollTop = 0;
         }
+
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
         }
