@@ -4,15 +4,13 @@
     box-sizing: border-box;
 }
 
-/* Запрещаем вертикальный скролл всей страницы */
 body, html {
     width: 100%;
     height: 100%;
-    overflow: hidden; 
+    overflow: hidden;
     background-color: #000;
 }
 
-/* Фон теперь всегда на весь экран и не зависит от контента */
 .bg-layer {
     position: fixed;
     top: 0;
@@ -26,56 +24,65 @@ body, html {
 
 header {
     text-align: center;
-    padding-top: 80px;
-    height: 160px; /* Фиксируем высоту шапки (80 отступ + высота лого примерно) */
+    padding-top: 5vh; /* Адаптивный отступ сверху (от высоты экрана) */
 }
 
-/* Основной контейнер с горизонтальным скроллом */
+.logo {
+    height: 60px; /* Можно задать фиксированную высоту или в vh */
+    width: auto;
+}
+
 main {
     width: 100%;
-    overflow-x: auto; /* Включаем гориз. скролл */
-    overflow-y: hidden; /* Выключаем вертик. скролл */
-    padding-top: 80px; /* Тот самый отступ под лого */
+    height: 80vh; /* Занимает основную часть экрана */
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab; /* Иконка руки для перетаскивания */
+    display: flex;
+    align-items: center; /* Центрируем контент по вертикали */
 }
 
-/* Чтобы скроллбар не перекрывал картинки, добавим немного места снизу */
-main::-webkit-scrollbar {
-    height: 6px;
+main:active {
+    cursor: grabbing;
 }
-main::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
+
+/* Скрываем скроллбар для чистоты дизайна */
+main::-webkit-scrollbar {
+    display: none;
 }
 
 .scroll-wrapper {
     display: inline-flex;
-    align-items: flex-end; /* ВЫРАВНИВАНИЕ ПО НИЗУ */
-    padding-left: 120px;
-    padding-right: 120px; /* Чтобы последняя картинка не прилипала к краю */
+    align-items: flex-end;
+    padding: 0 120px;
 }
 
 .cases-title {
     margin-right: 120px;
     flex-shrink: 0;
-    line-height: 0; /* Убираем лишние отступы у картинки */
+}
+
+/* Адаптивные размеры картинок */
+.case-item {
+    /* Картинки будут подстраиваться под высоту экрана, но не больше оригинала */
+    height: 65vh; 
+    width: auto; 
+    max-height: 694px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.case-item:hover {
+    transform: scale(1.02);
 }
 
 .portfolio-grid {
     display: flex;
     gap: 30px;
-    flex-shrink: 0;
 }
 
-.case-item {
-    width: 370px;
-    height: 694px;
-    object-fit: cover;
-    cursor: pointer;
-    flex-shrink: 0;
-    display: block;
-}
-
-/* Попап с реальным масштабом */
+/* ПОПАП С ПРОЗРАЧНОСТЬЮ */
 .popup {
     display: none;
     position: fixed;
@@ -83,22 +90,24 @@ main::-webkit-scrollbar-thumb {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0, 0.6); /* Прозрачность 60% */
+    backdrop-filter: blur(5px); /* Легкое размытие фона для эффекта глубины */
     z-index: 1000;
     justify-content: center;
     align-items: flex-start;
-    overflow-y: auto; /* Тут скролл нужен, если картинка длинная */
+    overflow-y: auto;
+    cursor: zoom-out;
 }
 
 .popup-content {
     width: 100%;
+    padding: 40px 0;
 }
 
 #popup-img {
-    width: auto; 
-    /* Если хочешь СОВСЕМ реальный масштаб (pixel-to-pixel), 
-       убери max-width ниже. Но тогда картинка может быть шире экрана. */
-    max-width: 100%; 
+    width: auto;
+    max-width: 90%; /* Оставляем зазоры по бокам */
     display: block;
     margin: 0 auto;
+    cursor: default;
 }
