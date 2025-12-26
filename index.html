@@ -67,62 +67,84 @@
 
     <script>
         const slider = document.getElementById('scroll-container');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+let isDown = false;
+let startX;
+let scrollLeft;
+let isDragging = false; // Переменная-предохранитель
 
-        // Колесико мыши
-        slider.addEventListener('wheel', (evt) => {
-            evt.preventDefault();
-            slider.scrollLeft += evt.deltaY;
-        });
+// Колесико мыши
+slider.addEventListener('wheel', (evt) => {
+    evt.preventDefault();
+    slider.scrollLeft += evt.deltaY;
+});
 
-        // Зажатие мышки
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true;
-            slider.classList.add('active');
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
-            slider.style.cursor = 'grabbing';
-            slider.style.userSelect = 'none';
-        });
+// Зажатие мышки
+slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    isDragging = false; // Сбрасываем при каждом новом нажатии
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+    slider.style.cursor = 'grabbing';
+    slider.style.userSelect = 'none';
+});
 
-        slider.addEventListener('mouseleave', () => {
-            isDown = false;
-            slider.style.cursor = 'grab';
-        });
+slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.style.cursor = 'grab';
+});
 
-        slider.addEventListener('mouseup', () => {
-            isDown = false;
-            slider.style.cursor = 'grab';
-            slider.style.userSelect = 'auto';
-        });
+slider.addEventListener('mouseup', (e) => {
+    isDown = false;
+    slider.style.cursor = 'grab';
+    slider.style.userSelect = 'auto';
 
-        slider.addEventListener('mousemove', (e) => {
-            if(!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            // Коэффициент 1 для плавного следования за курсором
-            const walk = (x - startX) * 1; 
-            slider.scrollLeft = scrollLeft - walk;
-        });
+    // Если мышь передвинулась во время нажатия — это был драг, блокируем клик
+    if (isDragging) {
+        // Чтобы предотвратить открытие попапа, мы можем использовать фазу захвата события
+    }
+});
 
-        // Предотвращаем "вытягивание" картинок браузером
-        slider.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dragstart', (e) => e.preventDefault());
-        });
+slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1;
+    
+    // Если сдвиг больше 5 пикселей, считаем это перетаскиванием
+    if (Math.abs(x - startX) > 5) {
+        isDragging = true;
+    }
 
-        function openPopup(src) {
-            const popup = document.getElementById('popup');
-            const popupImg = document.getElementById('popup-img');
-            popupImg.src = src;
-            popup.style.display = 'flex';
-            popup.scrollTop = 0;
-        }
+    if (isDragging) {
+        e.preventDefault();
+        slider.scrollLeft = scrollLeft - walk;
+    }
+});
 
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
+// Новая функция обертка для открытия попапа
+function handleCardClick(src) {
+    // Открываем только если не было перетаскивания
+    if (!isDragging) {
+        openPopup(src);
+    }
+}
+
+function openPopup(src) {
+    const popup = document.getElementById('popup');
+    const popupImg = document.getElementById('popup-img');
+    popupImg.src = src;
+    popup.style.display = 'flex';
+    popup.scrollTop = 0;
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+// Предотвращаем стандартный drag картинок
+slider.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', (e) => e.preventDefault());
+});
     </script>
 </body>
 </html>
