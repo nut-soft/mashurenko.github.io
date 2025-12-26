@@ -9,8 +9,6 @@
 </head>
 <body>
 
-    <div class="bg-layer"></div>
-
     <header>
         <img src="images/logo.png" alt="Logo" class="logo">
     </header>
@@ -73,25 +71,45 @@
         let startX;
         let scrollLeft;
 
+        // Колесико мыши
         slider.addEventListener('wheel', (evt) => {
             evt.preventDefault();
             slider.scrollLeft += evt.deltaY;
         });
 
+        // Зажатие мышки
         slider.addEventListener('mousedown', (e) => {
             isDown = true;
             slider.classList.add('active');
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
+            slider.style.cursor = 'grabbing';
+            slider.style.userSelect = 'none';
         });
-        slider.addEventListener('mouseleave', () => isDown = false);
-        slider.addEventListener('mouseup', () => isDown = false);
+
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
+
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+            slider.style.userSelect = 'auto';
+        });
+
         slider.addEventListener('mousemove', (e) => {
             if(!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2;
+            // Коэффициент 1 для плавного следования за курсором
+            const walk = (x - startX) * 1; 
             slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Предотвращаем "вытягивание" картинок браузером
+        slider.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
         });
 
         function openPopup(src) {
@@ -99,7 +117,6 @@
             const popupImg = document.getElementById('popup-img');
             popupImg.src = src;
             popup.style.display = 'flex';
-            // ФИКС БАГА: Сбрасываем скролл попапа вверх при открытии
             popup.scrollTop = 0;
         }
 
