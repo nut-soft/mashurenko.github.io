@@ -67,91 +67,87 @@
 
     <script>
         const slider = document.getElementById('scroll-container');
-let isDown = false;
-let startX;
-let scrollLeft;
-let isDragging = false; // Переменная-предохранитель
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let isDragging = false; 
 
-// Колесико мыши
-slider.addEventListener('wheel', (evt) => {
-    evt.preventDefault();
-    slider.scrollLeft += evt.deltaY;
-});
+        // 1. Скролл колесиком
+        slider.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            slider.scrollLeft += evt.deltaY;
+        });
 
-// Зажатие мышки
-slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    isDragging = false; // Сбрасываем при каждом новом нажатии
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-    slider.style.cursor = 'grabbing';
-    slider.style.userSelect = 'none';
-});
+        // 2. Зажатие кнопки мыши
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            isDragging = false; 
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            slider.style.cursor = 'grabbing';
+            slider.style.userSelect = 'none';
+        });
 
-slider.addEventListener('mouseleave', () => {
-    isDown = false;
-    slider.style.cursor = 'grab';
-});
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+        });
 
-slider.addEventListener('mouseup', (e) => {
-    isDown = false;
-    slider.style.cursor = 'grab';
-    slider.style.userSelect = 'auto';
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.cursor = 'grab';
+            slider.style.userSelect = 'auto';
+            // Не сбрасываем isDragging мгновенно, чтобы перехват клика успел отработать
+            setTimeout(() => { isDragging = false; }, 10);
+        });
 
-    // Если мышь передвинулась во время нажатия — это был драг, блокируем клик
-    if (isDragging) {
-        // Чтобы предотвратить открытие попапа, мы можем использовать фазу захвата события
-    }
-});
+        // 3. Движение мыши
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1;
+            
+            // Если сдвинули больше чем на 10 пикселей — это точно скролл, а не клик
+            if (Math.abs(x - startX) > 10) {
+                isDragging = true;
+            }
 
-slider.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 1;
-    
-    // Если сдвиг больше 5 пикселей, считаем это перетаскиванием
-    if (Math.abs(x - startX) > 5) {
-        isDragging = true;
-    }
+            if (isDragging) {
+                e.preventDefault();
+                slider.scrollLeft = scrollLeft - walk;
+            }
+        });
 
-    if (isDragging) {
-        e.preventDefault();
-        slider.scrollLeft = scrollLeft - walk;
-    }
-});
+        // 4. ГЛАВНЫЙ ПЕРЕХВАТ: Если был драг, клик не пройдет к картинкам
+        slider.addEventListener('click', (e) => {
+            if (isDragging) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }, true); // Параметр true включает фазу захвата
 
-// Новая функция обертка для открытия попапа
-function handleCardClick(src) {
-    // Открываем только если не было перетаскивания
-    if (!isDragging) {
-        openPopup(src);
-    }
-}
+        // 5. Функции Попапа
+        function openPopup(src) {
+            const popup = document.getElementById('popup');
+            const popupImg = document.getElementById('popup-img');
 
-function openPopup(src) {
-    const popup = document.getElementById('popup');
-    const popupImg = document.getElementById('popup-img');
+            popupImg.src = ''; // Очистка старого кадра
+            popupImg.src = src;
 
-    // 1. Сначала убираем старую картинку
-    popupImg.src = ''; 
-    
-    // 2. Устанавливаем новый путь
-    popupImg.src = src;
+            popup.style.display = 'flex';
+            popup.scrollTop = 0;
+        }
 
-    // 3. Показываем попап и сбрасываем скролл
-    popup.style.display = 'flex';
-    popup.scrollTop = 0;
-}
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
 
-function closePopup() {
-    document.getElementById('popup').style.display = 'none';
-}
-
-// Предотвращаем стандартный drag картинок
-slider.querySelectorAll('img').forEach(img => {
-    img.addEventListener('dragstart', (e) => e.preventDefault());
-});
+        // Блокировка стандартного перетаскивания картинок браузером
+        slider.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
+        });
     </script>
 </body>
 </html>
