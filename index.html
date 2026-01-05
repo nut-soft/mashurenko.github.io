@@ -132,7 +132,14 @@ function handleCardClick(src) {
 function openPopup(src) {
     const popup = document.getElementById('popup');
     const popupImg = document.getElementById('popup-img');
+
+    // 1. Сначала убираем старую картинку
+    popupImg.src = ''; 
+    
+    // 2. Устанавливаем новый путь
     popupImg.src = src;
+
+    // 3. Показываем попап и сбрасываем скролл
     popup.style.display = 'flex';
     popup.scrollTop = 0;
 }
