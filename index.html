@@ -146,25 +146,29 @@
         const popup = document.getElementById('popup');
         const popupImg = document.getElementById('popup-img');
         const popupVideo = document.getElementById('popup-video');
+        const popupContent = document.querySelector('.popup-content');
 
         function openPopup(src) {
-            // Скрываем видео, показываем картинку
+            // Настраиваем контент под картинку
+            popupContent.style.alignItems = 'flex-start'; 
             popupVideo.style.display = 'none';
             popupVideo.src = ''; 
-            
+
             popupImg.src = src;
             popupImg.style.display = 'block';
-
+    
             popup.style.display = 'flex';
+            popup.scrollTop = 0; // Скроллим в начало, если картинка длинная
         }
 
         function openVideo(videoUrl) {
-            // Скрываем картинку, показываем видео
+            // Настраиваем контент под видео (центрируем)
+            popupContent.style.alignItems = 'center'; 
             popupImg.style.display = 'none';
             popupImg.src = '';
 
-            // Добавляем параметр автоплея для удобства
-            popupVideo.src = videoUrl + "?autoplay=1"; 
+            // Используем /embed/ и добавляем автоплей
+            popupVideo.src = videoUrl + "?autoplay=1";
             popupVideo.style.display = 'block';
 
             popup.style.display = 'flex';
@@ -172,7 +176,6 @@
 
         function closePopup() {
             popup.style.display = 'none';
-            // Очищаем источники, чтобы видео перестало играть, а картинка не мерцала при следующем открытии
             popupVideo.src = '';
             popupImg.src = '';
         }
