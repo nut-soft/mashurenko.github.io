@@ -159,56 +159,41 @@ main {
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
-    
-    /* Эти три строки отвечают за идеальное центрирование */
-    justify-content: center;
-    align-items: center; 
-    
-    overflow: auto; /* Позволяет скроллить, если картинка всё же очень длинная */
+    overflow-y: auto; /* Позволяет скроллить длинные картинки */
     cursor: zoom-out;
 }
 
 .popup-content {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Картинки будут прижаты к верху для скролла */
+    min-height: 100%;
     width: 100%;
-    height: auto;
-    min-height: 100%; /* Нужно для корректного скролла */
-    padding: 20px;
+    padding: 40px 20px;
 }
 
 #popup-img {
-    /* Отменяет растягивание на весь экран */
-    width: auto; 
-    height: auto;
-    
-    /* Ограничивает картинку, чтобы она не была больше экрана */
-    max-width: 95%; 
-    max-height: 90vh; 
-    
     display: none;
-    margin: 0 auto;
+    width: auto;      /* Реальная ширина */
+    max-width: 95%;   /* Но не шире экрана */
+    height: auto;     /* Реальная высота */
     cursor: default;
-    
-    /* Сохраняет четкость пикселей, если это скриншоты интерфейса */
-    object-fit: contain; 
-    
-    animation: fadeIn 0.4s ease-in-out;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s ease;
 }
 
 #popup-video {
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Сохраняем пропорции видео */
-    max-height: 80vh;
     display: none;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
-    animation: fadeIn 0.4s ease-in-out;
+    width: 80vw;      /* Ширина — 80% от экрана */
+    max-width: 1100px; /* Но не более 1100px */
+    aspect-ratio: 16 / 9; /* Пропорции YouTube */
+    align-self: center;  /* Видео, в отличие от фото, всегда по центру */
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- АДАПТИВ --- */
@@ -222,4 +207,11 @@ main {
     .case-item { height: auto; width: 100%; }
     .case-caption { bottom: 25px; left: 20px; font-size: 14px; }
     .video-case::after { width: 60px; height: 60px; background-size: 30px; }
+    #popup-video {
+        width: 95vw;
+    }
+    .popup-content {
+        padding: 20px 10px;
+    }
+
 }
