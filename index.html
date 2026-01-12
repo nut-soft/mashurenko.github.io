@@ -26,6 +26,12 @@
                     <div class="case-caption">Landing Future Loan</div>
                 </div>
 
+                <div class="case-container" onclick="openVideo('https://www.youtube.com/watch?v=4WKPimFrzy8')">
+                    <img src="images/case_01_small.jpg" class="case-item"> 
+                    <img src="images/img_shadow.png" class="case-shadow">
+                    <div class="case-caption">Промо-видео проекта</div>
+                </div>
+
                 <div class="case-container" onclick="openPopup('images/case_02_big.jpg')">
                     <img src="images/case_02_small.jpg" class="case-item">
                     <img src="images/img_shadow.png" class="case-shadow">
@@ -72,8 +78,9 @@
     </main>
 
     <div id="popup" class="popup" onclick="closePopup()">
-        <div class="popup-content">
-            <img id="popup-img" src="" alt="Full size">
+    <div class="popup-content">
+        <img id="popup-img" src="" alt="Full size" style="display: none;">
+        <iframe id="popup-video" src="" frameborder="0" allowfullscreen style="display: none; width: 80vw; height: 45vw;"></iframe>
         </div>
     </div>
 
