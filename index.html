@@ -26,7 +26,7 @@
                     <div class="case-caption">Landing Future Loan</div>
                 </div>
 
-                <div class="case-container video-case" onclick="openVideo('https://www.youtube.com/watch?v=4WKPimFrzy8')">
+                <div class="case-container video-case" onclick="openVideo('https://www.youtube.com/embed/4WKPimFrzy8')">
                     <img src="images/case_01_small.jpg" class="case-item">
                     <img src="images/img_shadow.png" class="case-shadow">
                     <div class="case-caption">Showreel 2024</div>
@@ -78,9 +78,9 @@
     </main>
 
     <div id="popup" class="popup" onclick="closePopup()">
-    <div class="popup-content">
-        <img id="popup-img" src="" alt="Full size" style="display: none;">
-        <iframe id="popup-video" src="" frameborder="0" allowfullscreen style="display: none; width: 80vw; height: 45vw;"></iframe>
+        <div class="popup-content">
+            <img id="popup-img" src="" alt="Full size" style="display: none;">
+            <iframe id="popup-video" src="" frameborder="0" allowfullscreen style="display: none;"></iframe>
         </div>
     </div>
 
@@ -116,54 +116,68 @@
             isDown = false;
             slider.style.cursor = 'grab';
             slider.style.userSelect = 'auto';
-            // Не сбрасываем isDragging мгновенно, чтобы перехват клика успел отработать
             setTimeout(() => { isDragging = false; }, 10);
         });
 
         // 3. Движение мыши
         slider.addEventListener('mousemove', (e) => {
             if (!isDown) return;
-            
             const x = e.pageX - slider.offsetLeft;
             const walk = (x - startX) * 1;
-            
-            // Если сдвинули больше чем на 10 пикселей — это точно скролл, а не клик
             if (Math.abs(x - startX) > 10) {
                 isDragging = true;
             }
-
             if (isDragging) {
                 e.preventDefault();
                 slider.scrollLeft = scrollLeft - walk;
             }
         });
 
-        // 4. ГЛАВНЫЙ ПЕРЕХВАТ: Если был драг, клик не пройдет к картинкам
+        // 4. Перехват клика при драге
         slider.addEventListener('click', (e) => {
             if (isDragging) {
                 e.stopImmediatePropagation();
                 e.stopPropagation();
                 e.preventDefault();
             }
-        }, true); // Параметр true включает фазу захвата
+        }, true);
 
         // 5. Функции Попапа
-        function openPopup(src) {
-            const popup = document.getElementById('popup');
-            const popupImg = document.getElementById('popup-img');
+        const popup = document.getElementById('popup');
+        const popupImg = document.getElementById('popup-img');
+        const popupVideo = document.getElementById('popup-video');
 
-            popupImg.src = ''; // Очистка старого кадра
+        function openPopup(src) {
+            // Скрываем видео, показываем картинку
+            popupVideo.style.display = 'none';
+            popupVideo.src = ''; 
+            
             popupImg.src = src;
+            popupImg.style.display = 'block';
 
             popup.style.display = 'flex';
-            popup.scrollTop = 0;
+        }
+
+        function openVideo(videoUrl) {
+            // Скрываем картинку, показываем видео
+            popupImg.style.display = 'none';
+            popupImg.src = '';
+
+            // Добавляем параметр автоплея для удобства
+            popupVideo.src = videoUrl + "?autoplay=1"; 
+            popupVideo.style.display = 'block';
+
+            popup.style.display = 'flex';
         }
 
         function closePopup() {
-            document.getElementById('popup').style.display = 'none';
+            popup.style.display = 'none';
+            // Очищаем источники, чтобы видео перестало играть, а картинка не мерцала при следующем открытии
+            popupVideo.src = '';
+            popupImg.src = '';
         }
 
-        // Блокировка стандартного перетаскивания картинок браузером
+        // Блокировка стандартного перетаскивания картинок
         slider.querySelectorAll('img').forEach(img => {
             img.addEventListener('dragstart', (e) => e.preventDefault());
         });
